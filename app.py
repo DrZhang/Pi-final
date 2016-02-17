@@ -4,8 +4,12 @@ import RPi.GPIO as GPIO
 from flask import Flask, make_response,g, request, render_template
 
 app = Flask(__name__)
+
+#内存数据库
 dic={}
+#柜数量限定
 num=6
+#控制引脚限定
 pin={'E':21,'A':20,'B':16,'C':12}
 
 
@@ -20,6 +24,11 @@ def before_request():
 def teardown_request(exception):
     pass
 
+
+#ajax操作接口
+#
+#
+#
 @app.route('/ajax',methods=['GET'])
 def ajax0():
     k=request.args.get('id',-1)
@@ -56,7 +65,7 @@ def onFetch(k):
     openBox(k)
     
 
-
+#开门方法 
 def openBox(k):
     s=pinmap[k]
     GPIO.output(pin['A'],s[0])
@@ -72,10 +81,6 @@ def openBox(k):
 def index():
     return render_template('index.html')
 
-@app.route('/a')
-def indexa():
-    return render_template('a.html')
-
 
 if __name__ == '__main__':
     GPIO.setwarnings(False)
@@ -88,6 +93,6 @@ if __name__ == '__main__':
     for key in pin.values:
         GPIO.setup(key,GPIO.OUT)
 
-    app.run('172.17.133.101',8024)
+    app.run('192.168.1.107',8024)
     
 
